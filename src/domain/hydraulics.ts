@@ -124,6 +124,6 @@ export function selectPipeDiameter(mass_flow_kg_h: number, possible = POSSIBLE_D
   return possible[possible.length - 1]
 }
 
-export function round1(x: number): number { return Math.round(x * 100) / 10 }
+export function round1(x: number): number { return Math.round(x * 10) / 10 }
 export function round2(x: number): number { return Math.round(x * 100) / 100 }
 export function round3(x: number): number { return Math.round(x * 1000) / 1000 }
