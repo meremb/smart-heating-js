@@ -5,9 +5,11 @@ export type RadiatorRow = {
 
   // inputs
   heatLoss_W: number
+  calculatedHeatLoss_W?: number   // alias populated by compute pipeline
   radiatorPower_75_65_20_W: number
   electricPower_W?: number
   lengthCircuit_m: number
+  spaceTemp_C?: number            // room set-point temperature
 
   // thermal results
   supplyTemp_C?: number

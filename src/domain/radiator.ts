@@ -79,12 +79,14 @@ export function withThermalDesign(
 ): RadiatorRow[] {
   return radiators.map(row => {
     const base = row.radiatorPower_75_65_20_W ?? 0
-    const hl = row.calculatedHeatLoss_W ?? 0
+    // support both field name conventions
+    const hl = row.calculatedHeatLoss_W ?? row.heatLoss_W ?? 0
+    const spaceT = row.spaceTemp_C ?? 20
     const qRatio = base > 0 ? Math.max(hl, 0) / base : 0
     const r = new Radiator({
       q_ratio: qRatio,
       delta_t: deltaT_K,
-      space_temperature: row.spaceTemp_C ?? 20,
+      space_temperature: spaceT,
       heat_loss: hl,
       supply_temperature: supplyTemp_C,
     })
