@@ -1,53 +1,48 @@
-export type Room = {
-  id: number
-  roomType: string
-  floorArea_m2: number
-  spaceTemp_C: number
-  heatLoss_W: number
-}
-
+// src/domain/types.ts
 export type RadiatorRow = {
   radiatorNr: number
-  roomId: number
   collector: string
+
+  // inputs
+  heatLoss_W: number
   radiatorPower_75_65_20_W: number
-  calculatedHeatLoss_W: number
+  electricPower_W?: number
   lengthCircuit_m: number
-  spaceTemp_C: number
-  deltaT_K: number
-  supplyTemp_C: number
-  returnTemp_C: number
-  massFlowRate_kg_h: number
-  diameter_mm: number
+
+  // thermal results
+  supplyTemp_C?: number
+  returnTemp_C?: number
+  massFlowRate_kg_h?: number
+
+  // hydraulics results
+  diameter_mm?: number
+  dpPiping_Pa?: number
+  dpRadiatorBody_Pa?: number
+  dpCircuit_Pa?: number
+  totalPressureLoss_Pa?: number
+  dpTotal_Pa?: number
 
   // valve
   valveName: string
-  valvePosition?: number
+  valvePosition: number
   valveKv?: number
-
-  // hydraulics (Pa)
   dpValve_Pa?: number
-  dpPiping_Pa?: number
-  dpRadiatorBody_Pa?: number
-  dpCollectorBody_Pa?: number
-  dpCircuit_Pa?: number           // radiator circuit pressure loss (pipe + radiator body)
-  dpTotal_Pa?: number             // includes downstream collectors + boiler + valve setting if chosen
-  velocity_m_s?: number
+  valvePressureLossOpen_Pa?: number
 }
 
 export type CollectorRow = {
   name: string
   length_m: number
-  massFlowRate_kg_h: number
-  diameter_mm: number
+  diameter_mm?: number
+  massFlowRate_kg_h?: number
   dpCollectorCircuit_Pa?: number
-  velocity_m_s?: number
 }
 
 export type ValveOverride = {
+  valveName?: string
   position?: number
   kv?: number
-  valveName?: string
 }
 
-export type ValveOverrides = Record<number, ValveOverride> // key: radiatorNr
+// overrides per radiator number
+export type ValveOverrides = Record<number, ValveOverride>

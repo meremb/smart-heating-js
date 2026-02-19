@@ -70,4 +70,15 @@ export function checkPipeVelocities(radRows: any[], colRows: any[], maxVelocity 
   return { radiators, collectors, warnings }
 }
 
+// src/domain/hydraulics.ts
+export function selectPipeDiameter(massFlowRate_kg_h: number): number {
+  // zelfde fit als in python: min_d = 1.4641 * m^0.4217
+  const m = Math.max(0, massFlowRate_kg_h)
+  const minD = 1.4641 * Math.pow(m, 0.4217)
+
+  const standard = [8,10,12,13,14,16,20,22,25,28,36,50]
+  for (const d of standard) if (d >= minD) return d
+  return standard[standard.length - 1]
+}
+
 function round1(x:number){ return Math.round(x*10)/10 }

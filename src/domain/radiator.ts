@@ -69,3 +69,30 @@ export function selectPipeDiameter(massFlowRate: number, diameters = POSSIBLE_DI
 }
 
 function round1(x:number){ return Math.round(x*10)/10 }
+
+import { RadiatorRow } from './types'
+
+export function withThermalDesign(
+  radiators: RadiatorRow[],
+  supplyTemp_C: number,
+  deltaT_K: number
+): RadiatorRow[] {
+  return radiators.map(row => {
+    const base = row.radiatorPower_75_65_20_W ?? 0
+    const hl = row.calculatedHeatLoss_W ?? 0
+    const qRatio = base > 0 ? Math.max(hl, 0) / base : 0
+    const r = new Radiator({
+      q_ratio: qRatio,
+      delta_t: deltaT_K,
+      space_temperature: row.spaceTemp_C ?? 20,
+      heat_loss: hl,
+      supply_temperature: supplyTemp_C,
+    })
+    return {
+      ...row,
+      supplyTemp_C: r.supply_temperature,
+      returnTemp_C: r.return_temperature,
+      massFlowRate_kg_h: r.mass_flow_rate,
+    }
+  })
+}
